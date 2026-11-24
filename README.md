@@ -2,6 +2,12 @@
 
 *Game action RPG taktis 2D top-down berbasis Godot Engine 4 dengan sistem party empat hero real-time, kampanye cerita Chapter 1, dan mode jelajah.*
 
+> [!NOTE]
+> **Catatan Repositori:**  
+> Repositori ini (**flank-demo**) digunakan khusus untuk **pengumpulan tugas proyek sekolah**.  
+> Untuk proyek versi lanjutan yang dikembangkan secara mandiri (di luar lingkup proyek sekolah), silakan kunjungi:  
+> 🔗 **[https://github.com/bintanghawley/flank](https://github.com/bintanghawley/flank)**
+
 ---
 
 ## Ringkasan
@@ -160,9 +166,11 @@ Build Windows FLANK tersedia untuk diunduh dan dimainkan langsung tanpa perlu me
 
 1. **Clone repositori:**
    ```bash
-   git clone https://github.com/bintanghawley/flank.git
-   cd flank
+   # Repositori pengumpulan sekolah (flank-demo):
+   git clone https://github.com/bintanghawley/flank-demo.git
+   cd flank-demo
    ```
+   *(Atau untuk repositori proyek lanjutan mandiri: `git clone https://github.com/bintanghawley/flank.git`)*
 2. **Buka Godot Project Manager** (Godot Engine 4 yang kompatibel dengan konfigurasi proyek `4.7` / `Forward Plus`).
 3. Klik **Import**, pilih berkas `project.godot` di dalam folder hasil clone, lalu klik **Import & Edit**.
 4. Tunggu editor Godot menyelesaikan proses pemindaian dan impor aset awal.
