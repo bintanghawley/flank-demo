@@ -1,0 +1,226 @@
+[gd_scene format=3 uid="uid://80uy3wgwk1dw"]
+
+[ext_resource type="PackedScene" uid="uid://bwrcpv48t8r6w" path="res://scene/player/player_archer.tscn" id="1_33cqm"]
+[ext_resource type="Script" uid="uid://vjhhky8r2m43" path="res://scene/game.gd" id="1_game_script"]
+[ext_resource type="PackedScene" uid="uid://dol0jnt4w2mn7" path="res://scene/enemy/enemy.tscn" id="2_xwcet"]
+[ext_resource type="PackedScene" uid="uid://b7v8y5k8m1q02" path="res://scene/world/outdoor_world.tscn" id="3_map"]
+[ext_resource type="PackedScene" uid="uid://cmkcndgxhr4gq" path="res://scene/player/player_mage.tscn" id="4_mage"]
+[ext_resource type="PackedScene" uid="uid://c7yak2m4n8p1q" path="res://scene/player/player_knight.tscn" id="5_knight"]
+[ext_resource type="PackedScene" uid="uid://df7k2nab1nd1t" path="res://scene/player/player_bandit.tscn" id="6_bandit"]
+[ext_resource type="PackedScene" path="res://scene/enemy/enemy_knight.tscn" id="7_enemy_knight"]
+[ext_resource type="PackedScene" uid="uid://b5k8vyg6w3xqm" path="res://scene/ui/gameplay/gameplay_hud.tscn" id="8_hud"]
+[ext_resource type="PackedScene" uid="uid://df7k2nguard1t" path="res://scene/npc/npc_guard.tscn" id="9_npc_guard"]
+[ext_resource type="PackedScene" uid="uid://df7lam2e3p4q1" path="res://scene/world/castle_meeting_hall.tscn" id="10_hall"]
+[ext_resource type="PackedScene" uid="uid://bbewmvu1ukiy0" path="res://scene/world/secret_library.tscn" id="11_library"]
+[ext_resource type="FontFile" uid="uid://c74m8bvtvqkpw" path="res://assets/ui/fonts/beholden-bold.ttf" id="14_font"]
+[ext_resource type="Texture2D" uid="uid://cgyctt7vwk5d7" path="res://assets/environment/outdoor/arena-kamp-ground.png" id="15_arena_ground"]
+[ext_resource type="Texture2D" uid="uid://clu5fh5jgwjpv" path="res://assets/environment/outdoor/arena-kamp-structure.png" id="16_arena_structure"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_arena_wall_top"]
+size = Vector2(2530, 455)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_arena_wall_bottom"]
+size = Vector2(2530, 70)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_arena_wall_left"]
+size = Vector2(140, 700)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_arena_wall_right"]
+size = Vector2(170, 700)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_arena_crates"]
+size = Vector2(325, 145)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_arena_notice"]
+size = Vector2(240, 175)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_arena_dummies"]
+size = Vector2(300, 600)
+
+[sub_resource type="Shader" id="Shader_iris"]
+code = "shader_type canvas_item;
+
+uniform vec2 center = vec2(0.5, 0.5);
+uniform float radius : hint_range(0.0, 1.6) = 0.0;
+uniform float softness : hint_range(0.0, 0.1) = 0.015;
+
+void fragment() {
+	vec2 aspect = vec2(SCREEN_PIXEL_SIZE.y / SCREEN_PIXEL_SIZE.x, 1.0);
+	vec2 diff = (UV - center) * aspect;
+	float dist = length(diff);
+	float mask = smoothstep(radius - softness, radius + softness, dist);
+	COLOR = vec4(0.0, 0.0, 0.0, mask);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iris"]
+shader = SubResource("Shader_iris")
+shader_parameter/center = Vector2(0.5, 0.5)
+shader_parameter/radius = 0.0
+shader_parameter/softness = 0.015
+
+[node name="Game" type="Node2D" unique_id=1512194323]
+y_sort_enabled = true
+script = ExtResource("1_game_script")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=243320470]
+position = Vector2(2560, 2900)
+zoom = Vector2(0.8, 0.8)
+position_smoothing_enabled = true
+position_smoothing_speed = 7.0
+
+[node name="map_region1" parent="." unique_id=1420594985 instance=ExtResource("3_map")]
+
+[node name="Knight_1" parent="." unique_id=1280897880 instance=ExtResource("5_knight")]
+y_sort_enabled = true
+position = Vector2(2560, 2900)
+
+[node name="Bandit_1" parent="." unique_id=1680897880 instance=ExtResource("6_bandit")]
+y_sort_enabled = true
+position = Vector2(2560, 2900)
+
+[node name="Archer_1" parent="." unique_id=1380897880 instance=ExtResource("1_33cqm")]
+y_sort_enabled = true
+position = Vector2(2560, 2900)
+
+[node name="Mage_1" parent="." unique_id=1480987112 instance=ExtResource("4_mage")]
+y_sort_enabled = true
+position = Vector2(2560, 2900)
+
+[node name="Enemy_Knight_1" parent="." unique_id=110304380 instance=ExtResource("7_enemy_knight")]
+position = Vector2(6764, 5391.0005)
+can_respawn = false
+
+[node name="Enemy_Knight_2" parent="." unique_id=110304381 instance=ExtResource("7_enemy_knight")]
+position = Vector2(6804, 5595)
+can_respawn = false
+
+[node name="Enemy_Archer_1" parent="." unique_id=110304382 instance=ExtResource("2_xwcet")]
+position = Vector2(3980, 4700)
+can_respawn = false
+
+[node name="SkeletonBoss" parent="." unique_id=110304383 instance=ExtResource("7_enemy_knight")]
+position = Vector2(6200, 8400)
+can_respawn = false
+is_skeleton_boss = true
+
+[node name="Npc_Guard_Left" parent="." unique_id=1290897880 instance=ExtResource("9_npc_guard")]
+position = Vector2(2400, 1035)
+
+[node name="Npc_Guard_Right" parent="." unique_id=1290897881 instance=ExtResource("9_npc_guard")]
+position = Vector2(2666, 1035)
+
+[node name="Guard_Patrol_01" parent="." unique_id=1290897882 instance=ExtResource("9_npc_guard")]
+position = Vector2(860, 2200)
+patrol_points = Array[Vector2]([Vector2(860, 2200), Vector2(860, 1450), Vector2(860, 2200), Vector2(2000, 2200), Vector2(860, 2200), Vector2(860, 2650)])
+
+[node name="Guard_Patrol_02" parent="." unique_id=1290897883 instance=ExtResource("9_npc_guard")]
+position = Vector2(860, 2850)
+patrol_points = Array[Vector2]([Vector2(860, 2850), Vector2(1880, 2850), Vector2(1880, 3400), Vector2(860, 3400)])
+
+[node name="Guard_Patrol_03" parent="." unique_id=1290897884 instance=ExtResource("9_npc_guard")]
+position = Vector2(2620, 1180)
+patrol_points = Array[Vector2]([Vector2(2620, 1180), Vector2(2620, 3290)])
+
+[node name="Guard_Patrol_04" parent="." unique_id=1290897885 instance=ExtResource("9_npc_guard")]
+visible = false
+position = Vector2(4400, 2250)
+patrol_points = Array[Vector2]([Vector2(4400, 2250), Vector2(3320, 2250), Vector2(3320, 3550), Vector2(4150, 3550), Vector2(3320, 3550), Vector2(3320, 2250)])
+
+[node name="Guard_Patrol_05" parent="." unique_id=1290897886 instance=ExtResource("9_npc_guard")]
+position = Vector2(5200, 1980)
+patrol_points = Array[Vector2]([Vector2(5200, 1980), Vector2(6350, 1980), Vector2(6350, 1480), Vector2(6350, 1980)])
+
+[node name="GameplayHud" parent="." unique_id=161884810 instance=ExtResource("8_hud")]
+
+[node name="CastleObjectiveMarker" type="Node2D" parent="." unique_id=25330940]
+visible = false
+position = Vector2(2533, 940)
+
+[node name="MarkerLabel" type="Label" parent="CastleObjectiveMarker" unique_id=606839623]
+offset_left = -80.0
+offset_top = -24.0
+offset_right = 80.0
+offset_bottom = 6.0
+theme_override_colors/font_color = Color(1, 0.88, 0.35, 1)
+theme_override_colors/font_outline_color = Color(0.08, 0.08, 0.12, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("14_font")
+theme_override_font_sizes/font_size = 14
+text = "▼ AULA KASTIL"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CastleMeetingHall" parent="." unique_id=25331500 instance=ExtResource("10_hall")]
+position = Vector2(2533, -1500)
+
+[node name="SecretLibrary" parent="." unique_id=25331501 instance=ExtResource("11_library")]
+position = Vector2(4300, -1500)
+
+[node name="ArenaKamp" type="Node2D" parent="." unique_id=70002000]
+position = Vector2(7000, -2000)
+
+[node name="DarkBackdrop" type="ColorRect" parent="ArenaKamp" unique_id=70002001]
+z_index = -10
+offset_left = -1000.0
+offset_top = -800.0
+offset_right = 3530.0
+offset_bottom = 2000.0
+mouse_filter = 2
+color = Color(0.03, 0.03, 0.05, 1)
+
+[node name="Ground" type="Sprite2D" parent="ArenaKamp" unique_id=70002002]
+z_index = -2
+texture_filter = 1
+scale = Vector2(5, 5)
+texture = ExtResource("15_arena_ground")
+centered = false
+
+[node name="Structure" type="Sprite2D" parent="ArenaKamp" unique_id=70002003]
+texture_filter = 1
+scale = Vector2(5, 5)
+texture = ExtResource("16_arena_structure")
+centered = false
+
+[node name="ArenaCollisions" type="StaticBody2D" parent="ArenaKamp" unique_id=70002004]
+
+[node name="WallTop" type="CollisionShape2D" parent="ArenaKamp/ArenaCollisions" unique_id=70002005]
+position = Vector2(1265, 227.5)
+shape = SubResource("RectangleShape2D_arena_wall_top")
+
+[node name="WallBottom" type="CollisionShape2D" parent="ArenaKamp/ArenaCollisions" unique_id=70002006]
+position = Vector2(1265, 1145)
+shape = SubResource("RectangleShape2D_arena_wall_bottom")
+
+[node name="WallLeft" type="CollisionShape2D" parent="ArenaKamp/ArenaCollisions" unique_id=70002007]
+position = Vector2(70, 800)
+shape = SubResource("RectangleShape2D_arena_wall_left")
+
+[node name="WallRight" type="CollisionShape2D" parent="ArenaKamp/ArenaCollisions" unique_id=70002008]
+position = Vector2(2445, 800)
+shape = SubResource("RectangleShape2D_arena_wall_right")
+
+[node name="ObstacleCrates" type="CollisionShape2D" parent="ArenaKamp/ArenaCollisions" unique_id=70002009]
+position = Vector2(737.5, 1097.5)
+shape = SubResource("RectangleShape2D_arena_crates")
+
+[node name="ObstacleNoticeBoard" type="CollisionShape2D" parent="ArenaKamp/ArenaCollisions" unique_id=70002010]
+position = Vector2(1870, 487.5)
+shape = SubResource("RectangleShape2D_arena_notice")
+
+[node name="ObstacleRightDummies" type="CollisionShape2D" parent="ArenaKamp/ArenaCollisions" unique_id=70002011]
+position = Vector2(2325, 875)
+shape = SubResource("RectangleShape2D_arena_dummies")
+
+[node name="TransitionLayer" type="CanvasLayer" parent="." unique_id=98127341]
+layer = 100
+
+[node name="IrisMask" type="ColorRect" parent="TransitionLayer" unique_id=568817687]
+material = SubResource("ShaderMaterial_iris")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
